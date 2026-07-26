@@ -83,3 +83,11 @@ Added an extra life every third cleared level. The increasing enemy cadence can 
 ## 2026-07-26 — Improvement 16: hop input buffering
 
 Buffered the most recent direction pressed during a hop and consume it immediately after landing. This removes avoidable missed inputs at higher speeds while still allowing only one deliberate next move.
+
+## 2026-07-26 — Improvement 17: persistent sound toggle
+
+Added the M-key sound toggle with a persistent preference and an in-game status label. Players can now choose quiet play without disabling the visual feedback that supports the core loop.
+
+## 2026-07-26 — Exhausted (revisited)
+
+After the readability and five additional gameplay/polish iterations, considered new enemy classes, alternate pyramid sizes, achievements, online scores, art assets, and a campaign. Those would either need broader design/testing than this focused arcade clone or compromise its zero-build offline remit. The loop, input feel, progressive challenge, responsive presentation, and accessibility options are now complete.

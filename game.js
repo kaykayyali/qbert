@@ -31,6 +31,7 @@
     state = {
       mode: "title",
       paused: false,
+      muted: localStorage.qbertMuted === "true",
       score: 0,
       lives: 3,
       level: 1,
@@ -58,6 +59,7 @@
   // Sound is best-effort: browsers can deny audio until a gesture, but silence
   // must never block the game.
   function beep(f = 440, d = 0.08, type = "square", vol = 0.04) {
+    if (state?.muted) return;
     try {
       audio ??= new AudioContext();
       const o = audio.createOscillator(),
@@ -130,7 +132,7 @@
     const old = state.tiles[p.r][p.c];
     state.tiles[p.r][p.c] = Math.min(2, old + 1);
     state.score += old === 0 ? 25 : old === 1 ? 50 : 0;
-      if (state.score > high) {
+    if (state.score > high) {
       high = state.score;
       localStorage.qbertHigh = high;
     }
@@ -370,6 +372,7 @@
     ctx.fillText(`SCORE  ${String(state.score).padStart(6, "0")}`, 28, 90);
     ctx.textAlign = "right";
     ctx.fillText(`HI  ${String(high).padStart(6, "0")}`, W - 28, 90);
+    ctx.fillText(state.muted ? "SOUND OFF" : "M: SOUND", W - 28, 118);
     for (let r = rows - 1; r >= 0; r--) for (let c = 0; c <= r; c++) cube(r, c);
     for (const side of [-1, 1]) {
       const i = side === 1 ? 1 : 0;
@@ -446,6 +449,11 @@
     };
     if (k.toLowerCase() === "p" && state.mode === "play") {
       state.paused = !state.paused;
+      return;
+    }
+    if (k.toLowerCase() === "m") {
+      state.muted = !state.muted;
+      localStorage.qbertMuted = state.muted;
       return;
     }
     if (k === " " || k === "Enter") {
