@@ -79,3 +79,7 @@ Awarded 250 points when a disc rescues an upward edge hop, with a cyan particle 
 ## 2026-07-26 — Improvement 15: milestone recovery
 
 Added an extra life every third cleared level. The increasing enemy cadence can otherwise turn a strong run into a sudden dead end; this creates a readable long-run recovery milestone without weakening early difficulty.
+
+## 2026-07-26 — Improvement 16: hop input buffering
+
+Buffered the most recent direction pressed during a hop and consume it immediately after landing. This removes avoidable missed inputs at higher speeds while still allowing only one deliberate next move.

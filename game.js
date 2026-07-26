@@ -78,7 +78,11 @@
   }
   // --- Input and player movement -----------------------------------------------
   function move(name) {
-    if (state.mode !== "play" || state.player.hop) return;
+    if (state.mode !== "play") return;
+    if (state.player.hop) {
+      state.player.queued = name;
+      return;
+    }
     const [dr, dc] = dirs[name],
       p = state.player,
       nr = p.r + dr,
@@ -141,6 +145,9 @@
       state.flash = 1.2;
       beep(1040, 0.25, "sine");
     }
+    const queued = p.queued;
+    p.queued = null;
+    if (queued) move(queued);
   }
   function lose() {
     state.lives--;
