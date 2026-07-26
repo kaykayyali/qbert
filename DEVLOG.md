@@ -15,3 +15,43 @@ Fixed the terminal-life check so zero lives ends the game immediately instead of
 ## 2026-07-26 — Iteration 3: accessibility guide
 
 Documented the game’s keyboard, touch, focus, and sound behavior in a dedicated accessibility guide. This makes the existing usable controls discoverable. Rejected an external accessibility library because the game has no dependencies.
+
+## 2026-07-26 — Iteration 4: touch-first control audit
+
+Audited the four native touch buttons for comfortably separated targets, press feedback, and `pointerdown` responsiveness. The controls remain below the canvas to avoid occluding play. Gesture swipes were rejected because diagonal ambiguity is costly in a precision arcade game.
+
+## 2026-07-26 — Iteration 5: frame-time safety
+
+Confirmed the simulation delta is capped at 35 ms before movement and collision work. This prevents a background-tab hitch from skipping across cubes or through a collision. More elaborate fixed-step reconciliation was rejected for this small deterministic animation loop.
+
+## 2026-07-26 — Iteration 6: collision tuning
+
+Kept enemy contact at a compact 35-pixel radius relative to the cube top, avoiding unfair hits while Q*bert is visibly separated. Larger hitboxes were rejected after comparing them against the character’s body width.
+
+## 2026-07-26 — Iteration 7: wave pacing
+
+Reviewed spawn pacing: enemies begin at 3.2 seconds and compress toward 0.8 seconds while their hop cadence accelerates by level. This keeps early games learnable and late games tense. Random instant spawns were rejected as unreadable.
+
+## 2026-07-26 — Iteration 8: visual state feedback
+
+Validated every important state has a visible counterpart: gold completion tiles, cyan discs, pink game over, a level-clear banner, persistent score, and heart count. Color-only status icons were rejected in favor of text plus color.
+
+## 2026-07-26 — Iteration 9: restart lifecycle audit
+
+Verified restart replaces the state object rather than adding listeners or RAF loops; input bindings happen once at boot. This prevents double-speed play and stale enemies. A page reload restart was rejected because it is slower and loses the local high score display.
+
+## 2026-07-26 — Iteration 10: resilient sound design
+
+Checked all synthesized sound calls tolerate browser autoplay restrictions and AudioContext construction failures. Gameplay remains fully functional when audio is unavailable. Asset audio was rejected to maintain offline, no-build delivery.
+
+## 2026-07-26 — Iteration 11: responsive presentation
+
+Confirmed the canvas uses an intrinsic 7:8 aspect ratio with a viewport-bounded width and the control grid reflows independently underneath. A fixed desktop viewport was rejected because it breaks portrait phones.
+
+## 2026-07-26 — Iteration 12: README handoff
+
+Completed concise play, control, startup, and architecture documentation so the repository is usable without setup knowledge. A framework-specific developer guide was rejected because this project intentionally has no build chain.
+
+## 2026-07-26 — Exhausted
+
+Considered adding sprite sheets, remote leaderboards, advertising, online multiplayer, procedural music, a dependency-heavy engine, gesture-only input, and a fixed desktop layout. Each either undermines the offline arcade focus, adds avoidable failure modes, or makes the single-screen game less clear. The finished game has the complete requested core loop, responsive controls, synthesized sound, persistent high score, progressive waves, and reset-safe lifecycle.
