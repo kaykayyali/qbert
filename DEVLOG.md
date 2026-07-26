@@ -75,3 +75,7 @@ Added a P-key pause overlay that freezes the entire simulation without spawning 
 ## 2026-07-26 — Improvement 14: disc-risk reward
 
 Awarded 250 points when a disc rescues an upward edge hop, with a cyan particle burst to make the bonus legible. Discs now offer a clear score tradeoff rather than only an emergency reset.
+
+## 2026-07-26 — Improvement 15: milestone recovery
+
+Added an extra life every third cleared level. The increasing enemy cadence can otherwise turn a strong run into a sudden dead end; this creates a readable long-run recovery milestone without weakening early difficulty.

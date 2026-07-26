@@ -135,6 +135,7 @@
     if (state.tiles.flat().every((v) => v === 2)) {
       state.score += 1000 * state.level;
       state.level++;
+      if (state.level % 3 === 0) state.lives++;
       state.tiles.forEach((row) => row.fill(0));
       state.enemies = [];
       state.flash = 1.2;
