@@ -1,4 +1,10 @@
-/* Q*bert-inspired canvas arcade game. No external assets; all art and sound are procedural. */
+/*
+ * Q*bert-inspired canvas arcade game.
+ *
+ * The game intentionally has no build step or external assets so opening index.html is
+ * enough to play. Canvas coordinates stay at a stable logical resolution; CSS scales
+ * that surface to the available viewport without changing physics precision.
+ */
 (() => {
   "use strict";
   const canvas = document.querySelector("#game"),
@@ -9,13 +15,18 @@
     dirs = { ul: [-1, -1], ur: [-1, 0], dl: [1, 0], dr: [1, 1] };
   canvas.width = W;
   canvas.height = H;
+  // State is replaced on every new run instead of re-binding handlers. That keeps
+  // restart deterministic and prevents duplicate input or animation work.
   let audio,
     state,
     last = 0,
     raf,
     high = Number(localStorage.qbertHigh || 0);
+  // Offset each row by half a tile to project triangular row/column coordinates
+  // into the isometric diamond layout.
   const center = (r, c) => [W / 2 + (c - r / 2) * 92, 230 + r * 72];
   const valid = (r, c) => r >= 0 && r < rows && c >= 0 && c <= r;
+  // --- State and run lifecycle -------------------------------------------------
   function reset() {
     state = {
       mode: "title",
@@ -42,6 +53,9 @@
       message: "PRESS SPACE OR TAP TO START",
     };
   }
+  // --- Audio -------------------------------------------------------------------
+  // Sound is best-effort: browsers can deny audio until a gesture, but silence
+  // must never block the game.
   function beep(f = 440, d = 0.08, type = "square", vol = 0.04) {
     try {
       audio ??= new AudioContext();
@@ -61,6 +75,7 @@
     state.mode = "play";
     beep(660, 0.12, "triangle");
   }
+  // --- Input and player movement -----------------------------------------------
   function move(name) {
     if (state.mode !== "play" || state.player.hop) return;
     const [dr, dc] = dirs[name],
@@ -95,6 +110,7 @@
       beep(90, 0.25, "sawtooth");
     }
   }
+  // --- Physics, scoring, and collision -----------------------------------------
   function land() {
     const p = state.player;
     if (p.fall) {
@@ -131,7 +147,15 @@
       localStorage.qbertHigh = high;
       return;
     }
-    state.player = { r: 0, c: 0, x: W / 2, y: 190, tx: W / 2, ty: 190, hop: 0 };
+    state.player = {
+      r: 0,
+      c: 0,
+      x: W / 2,
+      y: 190,
+      tx: W / 2,
+      ty: 190,
+      hop: 0,
+    };
     state.enemies = [];
     state.timer = 1;
   }
@@ -163,6 +187,7 @@
       (a, b) =>
         Math.hypot(a[0] - p.r, a[1] - p.c) - Math.hypot(b[0] - p.r, b[1] - p.c),
     );
+    // Coily deliberately chooses the nearest hop; balls stay unpredictable.
     const n =
       e.kind === "coily" ? opts[0] : opts[(Math.random() * opts.length) | 0];
     e.r = n[0];
@@ -170,6 +195,8 @@
     [e.tx, e.ty] = center(...n);
     e.hop = 0.34;
   }
+  // The per-frame cap makes long background-tab pauses harmless: an enemy cannot
+  // leap through the player because one delayed frame simulated several seconds.
   function update(dt) {
     const s = state;
     s.flash = Math.max(0, s.flash - dt);
@@ -230,6 +257,7 @@
     }
     s.enemies = s.enemies.filter((e) => !e.dead);
   }
+  // --- Rendering ----------------------------------------------------------------
   function cube(r, c) {
     const [x, y] = center(r, c),
       v = state.tiles[r][c],
@@ -382,7 +410,9 @@
       text("TAP HERE OR PRESS SPACE TO RESTART", 630, 21, "#55e8f4");
     }
   }
+  // --- Frame loop and DOM lifecycle ---------------------------------------------
   function loop(t) {
+    // Clamp elapsed time to preserve playable hop and collision timing after a hitch.
     const dt = Math.min(0.035, (t - last) / 1000 || 0);
     last = t;
     update(dt);
@@ -404,6 +434,7 @@
       k && move(map[k]);
     }
   }
+  // Listeners are attached once at boot; reset() only replaces state.
   addEventListener("keydown", (e) => {
     if (
       [
