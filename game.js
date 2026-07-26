@@ -30,6 +30,7 @@
   function reset() {
     state = {
       mode: "title",
+      paused: false,
       score: 0,
       lives: 3,
       level: 1,
@@ -199,6 +200,7 @@
   // leap through the player because one delayed frame simulated several seconds.
   function update(dt) {
     const s = state;
+    if (s.paused) return;
     s.flash = Math.max(0, s.flash - dt);
     for (const q of s.particles) {
       q.x += q.vx * dt;
@@ -409,6 +411,12 @@
       text(`FINAL SCORE ${state.score}`, 545, 26);
       text("TAP HERE OR PRESS SPACE TO RESTART", 630, 21, "#55e8f4");
     }
+    if (state.paused) {
+      ctx.fillStyle = "#08051bd9";
+      ctx.fillRect(0, 390, W, 160);
+      text("PAUSED", 465, 42, "#ffec57");
+      text("PRESS P TO CONTINUE", 510, 20, "#55e8f4");
+    }
   }
   // --- Frame loop and DOM lifecycle ---------------------------------------------
   function loop(t) {
@@ -426,6 +434,10 @@
       ArrowRight: "dr",
       ArrowDown: "ur",
     };
+    if (k.toLowerCase() === "p" && state.mode === "play") {
+      state.paused = !state.paused;
+      return;
+    }
     if (k === " " || k === "Enter") {
       if (state.mode !== "play") start();
       return;

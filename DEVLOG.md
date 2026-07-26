@@ -67,3 +67,7 @@ Added a file-level explanation and comments for state/lifecycle, input, audio, p
 ## 2026-07-26 — Refactor 3: explicit responsive redraw
 
 Added a passive resize listener that redraws after the browser changes the CSS-scaled canvas surface, and added a sub-360px touch-control layout. The canvas retains its fixed logical resolution for precise collision math while CSS scales it to any viewport.
+
+## 2026-07-26 — Improvement 13: pause control
+
+Added a P-key pause overlay that freezes the entire simulation without spawning another loop or rebinding controls. This improves interruption handling while keeping the arcade presentation minimal.
