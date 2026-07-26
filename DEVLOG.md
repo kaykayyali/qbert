@@ -55,3 +55,15 @@ Completed concise play, control, startup, and architecture documentation so the 
 ## 2026-07-26 — Exhausted
 
 Considered adding sprite sheets, remote leaderboards, advertising, online multiplayer, procedural music, a dependency-heavy engine, gesture-only input, and a fixed desktop layout. Each either undermines the offline arcade focus, adds avoidable failure modes, or makes the single-screen game less clear. The finished game has the complete requested core loop, responsive controls, synthesized sound, persistent high score, progressive waves, and reset-safe lifecycle.
+
+## 2026-07-26 — Refactor 1: readable source formatting
+
+Reformatted HTML, CSS, and JavaScript with standard indentation and line wrapping so the implementation can be reviewed and maintained without decoding compressed lines. This was a non-behavioral refactor; syntax validation followed it.
+
+## 2026-07-26 — Refactor 2: subsystem commentary
+
+Added a file-level explanation and comments for state/lifecycle, input, audio, physics/collision, rendering, and the frame loop. Comments explain constraints such as stable logical coordinates, single-bind restarts, and delta-time clamping rather than narrating syntax.
+
+## 2026-07-26 — Refactor 3: explicit responsive redraw
+
+Added a passive resize listener that redraws after the browser changes the CSS-scaled canvas surface, and added a sub-360px touch-control layout. The canvas retains its fixed logical resolution for precise collision math while CSS scales it to any viewport.

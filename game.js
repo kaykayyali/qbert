@@ -434,6 +434,13 @@
       k && move(map[k]);
     }
   }
+
+  function handleResize() {
+    // CSS owns the responsive scale; a redraw ensures the canvas never presents
+    // an old frame while the browser is relaying out its display surface.
+    draw();
+  }
+
   // Listeners are attached once at boot; reset() only replaces state.
   addEventListener("keydown", (e) => {
     if (
@@ -453,6 +460,7 @@
     if (state.mode !== "play") start();
     canvas.focus();
   });
+  addEventListener("resize", handleResize, { passive: true });
   document.querySelectorAll("[data-move]").forEach((b) =>
     b.addEventListener("pointerdown", (e) => {
       e.preventDefault();

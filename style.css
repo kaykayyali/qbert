@@ -52,3 +52,15 @@ button:active {
     opacity: 0.78;
   }
 }
+
+@media (max-width: 360px) {
+  #touch {
+    grid-template-columns: repeat(2, minmax(56px, 1fr));
+    margin-inline: 18px;
+  }
+
+  button {
+    width: 100%;
+    min-width: 56px;
+  }
+}
