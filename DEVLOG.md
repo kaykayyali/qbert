@@ -71,3 +71,7 @@ Added a passive resize listener that redraws after the browser changes the CSS-s
 ## 2026-07-26 — Improvement 13: pause control
 
 Added a P-key pause overlay that freezes the entire simulation without spawning another loop or rebinding controls. This improves interruption handling while keeping the arcade presentation minimal.
+
+## 2026-07-26 — Improvement 14: disc-risk reward
+
+Awarded 250 points when a disc rescues an upward edge hop, with a cyan particle burst to make the bonus legible. Discs now offer a clear score tradeoff rather than only an emergency reset.

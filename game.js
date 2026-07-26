@@ -100,11 +100,13 @@
     const discIndex = right ? 1 : 0;
     if ((name === "ul" || name === "ur") && state.discs[discIndex]) {
       state.discs[discIndex] = false;
+      state.score += 250;
       p.nr = 0;
       p.nc = 0;
       p.tx = W / 2;
       p.ty = 190;
       p.rescue = true;
+      burst(p.x, p.y, "#55e8f4");
       beep(880, 0.22, "sine");
     } else {
       p.fall = true;
@@ -124,7 +126,7 @@
     const old = state.tiles[p.r][p.c];
     state.tiles[p.r][p.c] = Math.min(2, old + 1);
     state.score += old === 0 ? 25 : old === 1 ? 50 : 0;
-    if (state.score > high) {
+      if (state.score > high) {
       high = state.score;
       localStorage.qbertHigh = high;
     }
