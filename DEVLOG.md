@@ -11,3 +11,7 @@ Updated the high score the instant a scoring landing surpasses it, rather than o
 ## 2026-07-26 — Iteration 2: correct life boundary
 
 Fixed the terminal-life check so zero lives ends the game immediately instead of granting a hidden extra attempt. This was found by tracing the decrement path on falls and enemy collisions. Added no continue system because it would dilute the intended arcade pressure.
+
+## 2026-07-26 — Iteration 3: accessibility guide
+
+Documented the game’s keyboard, touch, focus, and sound behavior in a dedicated accessibility guide. This makes the existing usable controls discoverable. Rejected an external accessibility library because the game has no dependencies.
